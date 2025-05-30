@@ -30,7 +30,7 @@ A modern, interactive web application that visualizes regional sentiment data ac
 
 ## 🛠️ Tech Stack
 
--   **Framework:** Next.js 14+ with App Router
+-   **Framework:** Next.js 15+ with App Router
 -   **Language:** TypeScript
 -   **Styling:** Tailwind CSS
 -   **UI Components:** shadcn/ui
@@ -51,7 +51,7 @@ A modern, interactive web application that visualizes regional sentiment data ac
 1. **Clone the repository**
 
     ```bash
-    git clone <your-repo-url>
+    git clone https://github.com/brhanegiday/data-visualization
     cd data-visualization
     ```
 
@@ -112,13 +112,6 @@ United Kingdom,England,0
 -   `RandomValue` - Sentiment value (0=Negative, 1=Neutral, 2=Positive)
 
 ## 🎨 UI/UX Features
-
-### Visual Design
-
--   **Modern Gradient Backgrounds** - Subtle blue-to-indigo gradients
--   **Glass Morphism Effects** - Semi-transparent cards with backdrop blur
--   **Smooth Animations** - Fade-in effects and hover transitions
--   **Professional Typography** - Clear hierarchy and readable fonts
 
 ### User Experience
 
