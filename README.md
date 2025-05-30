@@ -73,8 +73,8 @@ A modern, interactive web application that visualizes regional sentiment data ac
 4. **Setup shadcn/ui components**
 
     ```bash
-    npx shadcn-ui@latest init
-    npx shadcn-ui@latest add card button badge select alert
+    npx shadcn@latest init
+    npx shadcn@latest add card button badge select alert
     ```
 
 5. **Add the dataset**
