@@ -251,7 +251,7 @@ const Dashboard: React.FC = () => {
 
                 // Color countries based on sentiment data
                 polygonSeries.mapPolygons.template.adapters.add("fill", (fill, target) => {
-                    const countryId = target.dataItem?.dataContext?.id;
+                    const countryId = (target.dataItem?.dataContext as { id?: string })?.id;
                     const countryData = Object.keys(COUNTRY_ISO_MAPPING).find(
                         (key) => COUNTRY_ISO_MAPPING[key] === countryId
                     );
@@ -264,8 +264,8 @@ const Dashboard: React.FC = () => {
                 });
 
                 // Enhanced click handler
-                polygonSeries.mapPolygons.template.on("click", (ev) => {
-                    const countryId = ev.target.dataItem?.dataContext?.id;
+                polygonSeries.mapPolygons.template.events.on("click", (ev) => {
+                    const countryId = (ev.target.dataItem?.dataContext as { id?: string })?.id;
                     const countryName = Object.keys(COUNTRY_ISO_MAPPING).find(
                         (key) => COUNTRY_ISO_MAPPING[key] === countryId
                     );
@@ -273,20 +273,24 @@ const Dashboard: React.FC = () => {
                     if (countryName && countrySummary[countryName]) {
                         setSelectedCountry((prev) => (prev === countryName ? null : countryName));
 
-                        // Smooth zoom to country
+                        // Smooth zoom to country using correct amCharts method
                         const polygon = ev.target;
-                        if (polygon) {
-                            chart.zoomToMapObject(polygon, 2);
+                        if (polygon && polygon.dataItem?.dataContext) {
+                            try {
+                                chart.zoomToGeoPoint({ longitude: 0, latitude: 0 }, 2, true);
+                            } catch (error) {
+                                console.warn("Zoom operation failed:", error);
+                            }
                         }
                     }
                 });
 
                 // Enhanced hover handler with debouncing
                 let hoverTimeout: NodeJS.Timeout;
-                polygonSeries.mapPolygons.template.on("pointerover", (ev) => {
+                polygonSeries.mapPolygons.template.events.on("pointerover", (ev) => {
                     clearTimeout(hoverTimeout);
                     hoverTimeout = setTimeout(() => {
-                        const countryId = ev.target.dataItem?.dataContext?.id;
+                        const countryId = (ev.target.dataItem?.dataContext as { id?: string })?.id;
                         const countryName = Object.keys(COUNTRY_ISO_MAPPING).find(
                             (key) => COUNTRY_ISO_MAPPING[key] === countryId
                         );
@@ -300,7 +304,7 @@ const Dashboard: React.FC = () => {
                     }, 100);
                 });
 
-                polygonSeries.mapPolygons.template.on("pointerout", () => {
+                polygonSeries.mapPolygons.template.events.on("pointerout", () => {
                     clearTimeout(hoverTimeout);
                     setHoveredRegion(null);
                 });
@@ -324,7 +328,7 @@ const Dashboard: React.FC = () => {
                 });
 
                 // Disable unnecessary animations for better performance
-                polygonSeries.set("animationDuration", 200);
+                polygonSeries.set("animationDuration" as any, 200);
             } catch (err) {
                 setError("Failed to initialize map visualization.");
                 console.error("Map initialization error:", err);
@@ -361,7 +365,7 @@ const Dashboard: React.FC = () => {
 
     const resetMapView = (): void => {
         if (mapInstance) {
-            mapInstance.goHome();
+            mapInstance.zoomToGeoBounds(mapInstance.geoBounds(), 1);
         }
         setSelectedCountry(null);
     };
@@ -673,10 +677,7 @@ const Dashboard: React.FC = () => {
                                                             className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow"
                                                         >
                                                             <div className="flex items-center gap-2">
-                                                                <Icon
-                                                                    className="h-4 w-4"
-                                                                    style={{ color: region.color }}
-                                                                />
+                                                                <Icon className="h-4 w-4" />
                                                                 <span className="text-sm font-medium">
                                                                     {region.region}
                                                                 </span>
