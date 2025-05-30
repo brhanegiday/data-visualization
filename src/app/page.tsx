@@ -429,7 +429,7 @@ const Dashboard: React.FC = () => {
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
             <div className="max-w-7xl mx-auto p-6 space-y-6">
                 {/* Enhanced Header */}
-                <div className="text-center py-8">
+                <div className="text-center pb-8">
                     <div className="flex items-center justify-center gap-3 mb-4">
                         <div className="p-3 bg-blue-600 rounded-full">
                             <Globe className="h-8 w-8 text-white" />
@@ -438,7 +438,7 @@ const Dashboard: React.FC = () => {
                             Global Sentiment Analysis
                         </h1>
                     </div>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                    <p className="text-md text-gray-600 max-w-2xl mx-auto">
                         Interactive visualization of regional sentiment data across {Object.keys(countrySummary).length}{" "}
                         countries and {data.length} regions worldwide
                     </p>
